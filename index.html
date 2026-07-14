@@ -398,7 +398,7 @@
                 const publicUrl = await uploadFileToSupabase("Photos", file);
 
                 // 2. Insert reference to database
-                const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/photos`, {
+                const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/Photos`, {
                     method: "POST",
                     headers: { ...headers, "Content-Type": "application/json", "Prefer": "return=representation" },
                     body: JSON.stringify({
