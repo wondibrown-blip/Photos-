@@ -21,7 +21,6 @@
 </head>
 <body class="bg-white text-black min-h-screen flex flex-col justify-between overflow-hidden select-none">
 
-    <!-- MAIN APP: PHOTOS TAB -->
     <div id="tab-photos-view" class="flex-1 flex flex-col h-full overflow-hidden">
         <header class="px-4 pt-6 pb-3 sticky top-0 bg-white/80 ios-blur z-40 border-b border-gray-100 flex justify-between items-end">
             <div onclick="registerSecretTap()" class="cursor-pointer text-left">
@@ -32,13 +31,11 @@
             </label>
         </header>
 
-        <!-- Scrollable Gallery Area -->
         <main class="flex-1 overflow-y-auto p-0.5 pb-28">
             <div id="gallery-grid" class="grid grid-cols-3 gap-0.5"></div>
         </main>
     </div>
 
-    <!-- MAIN APP: PLAYLIST TAB -->
     <div id="tab-playlist-view" class="flex-1 flex flex-col h-full overflow-hidden hidden">
         <header class="px-4 pt-6 pb-3 sticky top-0 bg-white/80 ios-blur z-40 border-b border-gray-100 flex justify-between items-end">
             <div onclick="registerSecretTap()" class="cursor-pointer text-left">
@@ -47,17 +44,13 @@
             <button id="dev-create-playlist-btn" onclick="triggerCreatePlaylistModal()" class="text-sm font-bold bg-blue-500 text-white px-4 py-1.5 rounded-full shadow-md active:scale-95 transition-transform hidden">New Playlist</button>
         </header>
 
-        <!-- Premium Modern Media Grid -->
         <main class="flex-1 overflow-y-auto px-4 pt-6 pb-32">
             <div id="playlist-container" class="grid grid-cols-2 gap-x-4 gap-y-6">
-                <!-- Rendered playlists cards -->
-            </div>
+                </div>
         </main>
     </div>
 
-    <!-- MODERN PREMIUM FULLSCREEN PLAYLIST VIEW -->
     <div id="playlist-detail-view" class="fixed inset-0 bg-white z-40 hidden flex flex-col overflow-hidden">
-        <!-- Floating Navigation Header -->
         <header class="px-4 pt-6 pb-3 flex justify-between items-center border-b border-gray-100 bg-white/80 ios-blur sticky top-0 z-50">
             <button onclick="closePlaylistDetail()" class="text-blue-500 font-semibold text-sm flex items-center bg-gray-50 px-3 py-1.5 rounded-full active:opacity-60 space-x-1">
                 <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -69,18 +62,14 @@
             </label>
         </header>
 
-        <!-- Main Fullscreen Dynamic Body -->
         <div class="flex-1 overflow-y-auto p-5 pb-36 bg-gradient-to-b from-zinc-50 via-white to-white">
             <div class="flex flex-col items-center text-center mt-4 mb-8 relative">
                 <button id="playlist-delete-btn" onclick="triggerPlaylistDeleteConfirmation()" class="absolute -top-2 left-0 text-[10px] bg-red-50 text-red-500 px-2.5 py-1 rounded-full font-bold tracking-wider uppercase border border-red-100 hidden">Delete</button>
                 
-                <!-- Premium Centered Art Showcase (Vinyl Record Style) -->
                 <div id="main-vinyl-disc" class="w-44 h-44 bg-gradient-to-br from-zinc-900 via-zinc-800 to-black rounded-full shadow-2xl flex flex-col items-center justify-center relative border-4 border-zinc-950 mb-5 ring-8 ring-zinc-100/50">
-                    <!-- Vinyl Grooves -->
                     <div class="absolute inset-4 border border-zinc-700/30 rounded-full"></div>
                     <div class="absolute inset-8 border border-zinc-700/20 rounded-full"></div>
                     <div class="absolute inset-12 border border-zinc-700/10 rounded-full"></div>
-                    <!-- Center Label -->
                     <div class="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-inner">
                         <div class="w-3 h-3 bg-white rounded-full"></div>
                     </div>
@@ -89,7 +78,6 @@
                 <h3 id="detail-header-title" class="text-2xl font-black text-zinc-950 tracking-tight px-4 truncate max-w-full"></h3>
                 <p id="detail-header-meta" class="text-xs text-zinc-400 mt-1.5 font-semibold tracking-wide uppercase"></p>
                 
-                <!-- Control Dashboard -->
                 <div class="flex space-x-3 mt-6 w-full max-w-xs px-2">
                     <button onclick="playPlaylistContext(false)" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-sm active:scale-95 transition-transform">
                         <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -102,7 +90,6 @@
                 </div>
             </div>
 
-            <!-- Sleek iOS Tracklist Design -->
             <div class="w-full max-w-md mx-auto text-left">
                 <p class="text-[10px] font-black uppercase text-zinc-400 tracking-wider mb-2 px-1">Audio Tracks</p>
                 <div id="detail-tracks-list" class="divide-y divide-zinc-100 border border-zinc-100 rounded-2xl overflow-hidden bg-white shadow-sm"></div>
@@ -110,7 +97,6 @@
         </div>
     </div>
 
-    <!-- INTERACTIVE LIGHTBOX VAULT -->
     <div id="lightbox" class="fixed inset-0 bg-white z-50 hidden flex flex-col justify-between" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">
         <header class="p-4 flex justify-between items-center bg-white/90 ios-blur border-b border-gray-100 z-50">
             <button onclick="closeLightbox()" class="text-blue-500 font-semibold text-sm flex items-center bg-gray-50 px-2.5 py-1.5 rounded-full active:opacity-60">
@@ -148,7 +134,6 @@
         </footer>
     </div>
 
-    <!-- GLOBAL AUDIO PLAYER ENGINE -->
     <div id="global-music-player-bar" class="fixed bottom-20 left-4 right-4 max-w-md mx-auto bg-zinc-950 text-white rounded-2xl p-3 shadow-2xl flex items-center justify-between z-40 hidden transition-all duration-300">
         <div class="flex items-center space-x-3 truncate">
             <div id="bar-vinyl" class="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center text-xs shadow-inner text-blue-500">
@@ -168,7 +153,6 @@
         </div>
     </div>
 
-    <!-- FIXED MAIN TAB BAR -->
     <nav id="app-main-tabbar" class="fixed bottom-0 left-0 right-0 bg-white/80 ios-blur border-t border-gray-200 pt-2 pb-6 px-16 flex justify-between items-center z-40">
         <button onclick="switchTab('photos')" id="nav-photos" class="flex flex-col items-center text-blue-500">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm0 9h7v7H4v-7zm9-9h7v7h-7V4zm0 9h7v7h-7v-7z"/></svg>
@@ -180,7 +164,6 @@
         </button>
     </nav>
 
-    <!-- PREMIUM INTERACTIVE CUSTOM DIALOG MODALS -->
     <div id="custom-modal-container" class="fixed inset-0 bg-zinc-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-6 hidden">
         <div id="modal-input-card" class="bg-white rounded-2xl max-w-xs w-full p-5 shadow-xl text-center flex flex-col hidden animate-fadeIn scale-95 transition-transform duration-200">
             <h3 id="modal-input-title" class="text-sm font-bold text-zinc-900 mb-1">Name</h3>
@@ -282,6 +265,7 @@
                 deletePhotoBtn?.classList.add('hidden');
             }
             if(currentPhotoIndex !== null) refreshLightboxContent();
+            if(activePlaylistId) refreshPlaylistDetailView();
         }
 
         function openInputModal(title, sub, callback) {
@@ -367,30 +351,29 @@
         // ==========================================
         // FILE UPLOAD AND STORAGE HANDLING
         // ==========================================
-       async function uploadFileToSupabase(bucket, file) {
-    // Pastikan tidak ada spasi pada nama file agar Supabase tidak error
-    const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-    const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`;
+        async function uploadFileToSupabase(bucket, file) {
+            const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+            const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`;
 
-    const uploadHeaders = {
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-        "Content-Type": file.type
-    };
+            const uploadHeaders = {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": file.type
+            };
 
-    const uploadRes = await fetch(uploadUrl, {
-        method: "POST",
-        headers: uploadHeaders,
-        body: file
-    });
+            const uploadRes = await fetch(uploadUrl, {
+                method: "POST",
+                headers: uploadHeaders,
+                body: file
+            });
 
-    if (!uploadRes.ok) {
-        const errText = await uploadRes.text();
-        throw new Error(`Storage Upload Failed: ${uploadRes.status} - ${errText}`);
-    }
+            if (!uploadRes.ok) {
+                const errText = await uploadRes.text();
+                throw new Error(`Storage Upload Failed: ${uploadRes.status} - ${errText}`);
+            }
 
-    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
-}
+            return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
+        }
 
         async function handlePhotoUpload(input) {
             if (!isDeveloperUnlocked) return;
@@ -398,18 +381,19 @@
             const file = input.files[0];
 
             try {
-                // 1. Upload raw photo to "photos" storage bucket
                 const publicUrl = await uploadFileToSupabase("Photos", file);
 
-                // 2. Insert reference to database
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/photos`, {
                     method: "POST",
                     headers: { ...headers, "Content-Type": "application/json", "Prefer": "return=representation" },
                     body: JSON.stringify({
                         storage_path: publicUrl,
                         note: "",
-                        author_name: currentUserName,
+                        author_name: currentUserName
+                    })
                 });
+                const err=await insertRes.text();
+                if(!insertRes.ok){alert(err);return;}
 
                 if (insertRes.ok) loadData();
             } catch (e) {
@@ -602,9 +586,12 @@
             const pl = playlists.find(p => p.id === activePlaylistId);
             if (!pl) return;
 
+            // Ensure tracks array exists safely
+            if (!pl.tracks) pl.tracks = [];
+
             document.getElementById('detail-playlist-title').innerText = pl.name;
             document.getElementById('detail-header-title').innerText = pl.name;
-            document.getElementById('detail-header-meta').innerText = `By ${pl.creator_name} — ${pl.tracks ? pl.tracks.length : 0} Tracks`;
+            document.getElementById('detail-header-meta').innerText = `By ${pl.creator_name} — ${pl.tracks.length} Tracks`;
 
             const deletePlBtn = document.getElementById('playlist-delete-btn');
             if (isDeveloperUnlocked) {
@@ -627,7 +614,7 @@
             // Render Tracks list
             const tracksContainer = document.getElementById('detail-tracks-list');
             tracksContainer.innerHTML = '';
-            if (!pl.tracks || pl.tracks.length === 0) {
+            if (pl.tracks.length === 0) {
                 tracksContainer.innerHTML = `<p class="p-6 text-zinc-400 text-xs text-center font-medium">No tracks in this playlist yet.</p>`;
             } else {
                 pl.tracks.forEach((track, index) => {
@@ -642,7 +629,7 @@
                             </div>
                         </div>
                         ${isDeveloperUnlocked ? `
-                        <button onclick="deleteTrack(${index})" class="text-red-500 opacity-0 group-hover:opacity-100 active:opacity-50 px-2 py-1 transition-opacity">
+                        <button onclick="event.stopPropagation(); deleteTrack(${index})" class="text-red-500 opacity-100 group-hover:opacity-100 active:opacity-50 px-2 py-1 transition-opacity z-50">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                         ` : ''}
@@ -658,10 +645,8 @@
             const file = input.files[0];
 
             try {
-                // 1. Upload audio track to "musicaholic" bucket
                 const publicUrl = await uploadFileToSupabase("musicaholic", file);
 
-                // 2. Insert metadata linking to current active playlist ID
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/tracks`, {
                     method: "POST",
                     headers: { ...headers, "Content-Type": "application/json" },
@@ -697,7 +682,7 @@
 
         function playTrackDirectly(index) {
             const pl = playlists.find(p => p.id === activePlaylistId);
-            if (!pl) return;
+            if (!pl || !pl.tracks) return;
             isShuffle = false;
             audioQueue = [...pl.tracks];
             currentQueueIndex = index;
@@ -761,6 +746,7 @@
         function deleteTrack(trackIndex) {
             if (!isDeveloperUnlocked || !activePlaylistId) return;
             const pl = playlists.find(p => p.id === activePlaylistId);
+            if (!pl || !pl.tracks) return;
             const track = pl.tracks[trackIndex];
 
             openConfirmModal("Delete Track", "Are you sure you want to remove this audio track?", "Delete", async () => {
