@@ -409,8 +409,6 @@
                         storage_path: publicUrl,
                         note: "",
                         author_name: currentUserName,
-                        date_added: new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
-                    })
                 });
 
                 if (insertRes.ok) loadData();
@@ -456,7 +454,7 @@
             const displayIndex = currentPhotoIndex + 1;
             document.getElementById('lightbox-index-title').innerText = `${displayIndex} of ${total}`;
             document.getElementById('meta-author').innerText = photo.author_name;
-            document.getElementById('meta-date').innerText = photo.date_added || "N/A";
+            document.getElementById('meta-date').innerText = photo.created_at || "N/A";
             
             const captionEl = document.getElementById('meta-caption');
             const hintEl = document.getElementById('meta-caption-hint');
