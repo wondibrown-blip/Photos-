@@ -265,7 +265,6 @@
                 deletePhotoBtn?.classList.add('hidden');
             }
             if(currentPhotoIndex !== null) refreshLightboxContent();
-            if(activePlaylistId) refreshPlaylistDetailView();
         }
 
         function openInputModal(title, sub, callback) {
@@ -352,28 +351,29 @@
         // FILE UPLOAD AND STORAGE HANDLING
         // ==========================================
        async function uploadFileToSupabase(bucket, file) {
-            const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-            const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`;
+    // Pastikan tidak ada spasi pada nama file agar Supabase tidak error
+    const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+    const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${bucket}/${fileName}`;
 
-            const uploadHeaders = {
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-                "Content-Type": file.type
-            };
+    const uploadHeaders = {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Content-Type": file.type
+    };
 
-            const uploadRes = await fetch(uploadUrl, {
-                method: "POST",
-                headers: uploadHeaders,
-                body: file
-            });
+    const uploadRes = await fetch(uploadUrl, {
+        method: "POST",
+        headers: uploadHeaders,
+        body: file
+    });
 
-            if (!uploadRes.ok) {
-                const errText = await uploadRes.text();
-                throw new Error(`Storage Upload Failed: ${uploadRes.status} - ${errText}`);
-            }
+    if (!uploadRes.ok) {
+        const errText = await uploadRes.text();
+        throw new Error(`Storage Upload Failed: ${uploadRes.status} - ${errText}`);
+    }
 
-            return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
-        }
+    return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${fileName}`;
+}
 
         async function handlePhotoUpload(input) {
             if (!isDeveloperUnlocked) return;
@@ -381,8 +381,10 @@
             const file = input.files[0];
 
             try {
+                // 1. Upload raw photo to "photos" storage bucket
                 const publicUrl = await uploadFileToSupabase("Photos", file);
 
+                // 2. Insert reference to database
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/photos`, {
                     method: "POST",
                     headers: { ...headers, "Content-Type": "application/json", "Prefer": "return=representation" },
@@ -438,7 +440,24 @@
             const displayIndex = currentPhotoIndex + 1;
             document.getElementById('lightbox-index-title').innerText = `${displayIndex} of ${total}`;
             document.getElementById('meta-author').innerText = photo.author_name;
-            document.getElementById('meta-date').innerText = photo.created_at || "N/A";
+
+            // --- FORMAT TANGGAL DAN JAM DIGANTI DISINI ---
+            if (photo.created_at) {
+                const dateObj = new Date(photo.created_at);
+                const formattedDate = dateObj.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                const formattedTime = dateObj.toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('meta-date').innerText = `${formattedDate} — ${formattedTime}`;
+            } else {
+                document.getElementById('meta-date').innerText = "N/A";
+            }
+            // ----------------------------------------------
             
             const captionEl = document.getElementById('meta-caption');
             const hintEl = document.getElementById('meta-caption-hint');
@@ -601,7 +620,7 @@
 
             // Sync Vinyl Rotator State
             const mainVinyl = document.getElementById('main-vinyl-disc');
-            const isPlayingThisPlaylist = !audioEngine.paused && audioQueue.length > 0 && pl.tracks && pl.tracks.some(t => t.id === audioQueue[currentQueueIndex]?.id);
+            const isPlayingThisPlaylist = !audioEngine.paused && audioQueue.length > 0 && pl.tracks.some(t => t.id === audioQueue[currentQueueIndex]?.id);
             if (isPlayingThisPlaylist) {
                 mainVinyl?.classList.add('animate-spin-slow');
             } else {
@@ -626,7 +645,7 @@
                             </div>
                         </div>
                         ${isDeveloperUnlocked ? `
-                        <button onclick="event.stopPropagation(); deleteTrack(${index})" class="text-red-500 opacity-100 active:opacity-50 px-2 py-1 transition-opacity z-50">
+                        <button onclick="deleteTrack(${index})" class="text-red-500 opacity-0 group-hover:opacity-100 active:opacity-50 px-2 py-1 transition-opacity">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                         ` : ''}
@@ -642,8 +661,10 @@
             const file = input.files[0];
 
             try {
+                // 1. Upload audio track to "musicaholic" bucket
                 const publicUrl = await uploadFileToSupabase("musicaholic", file);
 
+                // 2. Insert metadata linking to current active playlist ID
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/tracks`, {
                     method: "POST",
                     headers: { ...headers, "Content-Type": "application/json" },
@@ -679,7 +700,7 @@
 
         function playTrackDirectly(index) {
             const pl = playlists.find(p => p.id === activePlaylistId);
-            if (!pl || !pl.tracks) return;
+            if (!pl) return;
             isShuffle = false;
             audioQueue = [...pl.tracks];
             currentQueueIndex = index;
@@ -743,7 +764,6 @@
         function deleteTrack(trackIndex) {
             if (!isDeveloperUnlocked || !activePlaylistId) return;
             const pl = playlists.find(p => p.id === activePlaylistId);
-            if (!pl || !pl.tracks) return;
             const track = pl.tracks[trackIndex];
 
             openConfirmModal("Delete Track", "Are you sure you want to remove this audio track?", "Delete", async () => {
