@@ -139,7 +139,7 @@
                     <div class="flex justify-between"><span class="text-gray-400">Uploaded By:</span> <span id="meta-author" class="font-bold text-gray-900"></span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Date Added:</span> <span id="meta-date" class="font-medium"></span></div>
                     <div class="border-t border-gray-200/60 my-2 pt-2">
-                        <span class="text-gray-400 block mb-1">Description / Note:</span>
+                        <span class="text-gray-400 block mb-1">Note:</span>
                         <p id="meta-caption" class="text-zinc-800 font-medium bg-white p-2 rounded-lg border border-zinc-100 min-h-[32px] break-words"></p>
                         <span id="meta-caption-hint" class="text-[9px] text-zinc-400 italic mt-1 block hidden">💡 Tap here to edit</span>
                     </div>
@@ -207,8 +207,8 @@
         // ==========================================
         // CONFIGURATION: INSERT YOUR SUPABASE DATA
         // ==========================================
-        const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co"; 
-        const SUPABASE_ANON_KEY = "YOUR_ANON_PUBLIC_KEY";
+        const SUPABASE_URL = "https://fhfjfwplicgzpbtncjyw.supabase.co/rest/v1/"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoZmpmd3BsaWNnenBidG5janl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NzkwMTMsImV4cCI6MjA5OTU1NTAxM30.6-_O92a3w83OqYZDh-N2twnZOF6yFi8YdOQSM5jO4lA";
 
         const headers = {
             "apikey": SUPABASE_ANON_KEY,
@@ -246,7 +246,7 @@
                 secretTapCount = 0;
                 
                 if (!isDeveloperUnlocked) {
-                    openInputModal("Admin Access", "Enter admin name to unlock editing tools:", (val) => {
+                    openInputModal("Ya congrats", "Your name:", (val) => {
                         if (val && val.trim() !== "") {
                             currentUserName = val.trim();
                             isDeveloperUnlocked = true;
@@ -456,13 +456,13 @@
             
             const captionEl = document.getElementById('meta-caption');
             const hintEl = document.getElementById('meta-caption-hint');
-            captionEl.innerText = photo.note && photo.note.trim() !== "" ? photo.note : "(No description added yet)";
+            captionEl.innerText = photo.note && photo.note.trim() !== "" ? photo.note : "...";
             
             if (isDeveloperUnlocked) {
                 hintEl.classList.remove('hidden');
                 captionEl.className = "text-zinc-800 font-medium bg-zinc-100 p-2 rounded-lg border border-zinc-200 min-h-[32px] break-words cursor-pointer active:bg-zinc-200 text-left";
                 captionEl.onclick = () => {
-                    openInputModal("Edit Caption", "Change the description text for this photo:", async (newNote) => {
+                    openInputModal("Edit Caption", "Edit:", async (newNote) => {
                         const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/photos?id=eq.${photo.id}`, {
                             method: "PATCH",
                             headers: { ...headers, "Content-Type": "application/json" },
